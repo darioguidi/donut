@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#define M_PI 3.14159265358979323846
+
 void getCoordinates(double R1, double R2, double theta, double *x, double *y, double *z){
     *x = R2 + R1 * cos(theta);
     *y = R1 * sin(theta);
