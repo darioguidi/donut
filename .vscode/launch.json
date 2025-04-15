@@ -5,7 +5,10 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": [],
+      "args": [
+      "-lX11",
+      "-lm"
+      ],
       "stopAtEntry": false,
       "externalConsole": true,
       "cwd": "c:/Users/dario/dario/Projects/donut",
