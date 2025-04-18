@@ -26,11 +26,18 @@ void drawTorus(SDL_Renderer* renderer, float R1, float R2) {
 }
 
 int main(void) {
+<<<<<<< HEAD
     float R1, R2;
 
     // Inizializza SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Errore inizializzazione SDL: %s\n", SDL_GetError());
+=======
+    
+    Display *display = XOpenDisplay(NULL);
+    if (display == NULL) {
+        fprintf(stderr, "Impossibile aprire il display\n");
+>>>>>>> 163ee7c2392177481cefefc61518515140564a8f
         return 1;
     }
 
