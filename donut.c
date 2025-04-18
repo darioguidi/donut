@@ -32,6 +32,7 @@ void drawPoints(Display *display, Window window, GC gc) {
 }
 
 int main(void) {
+    
     Display *display = XOpenDisplay(NULL);
     if (display == NULL) {
         fprintf(stderr, "Impossibile aprire il display\n");
