@@ -1,15 +1,12 @@
 # Compilatore
 CC = gcc
 
-CFLAGS = -Wall
+CFLAGS = -Wall -std=c99
 
 # Librerie
-LIBS = -lX11 -lm
-
+LIBS = -lSDL2 -lm
 
 TARGET = donut
-
-# Alias del eseguibile
 SRC = donut.c
 
 $(TARGET): $(SRC)

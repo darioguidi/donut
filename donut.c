@@ -1,71 +1,84 @@
-#include <X11/Xlib.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <math.h>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 #define WIDTH 800
 #define HEIGHT 800
 
-void drawPoints(Display *display, Window window, GC gc) {
-    float i, j;
+void drawTorus(SDL_Renderer* renderer, float R1, float R2) {
+    float x, y;
+    int centerX = WIDTH / 2;
+    int centerY = HEIGHT / 2;
 
-    XClearWindow(display, window);
+    for (float theta = 0.0f; theta < 2 * M_PI; theta += 0.05f) {
+        for (float phi = 0.0f; phi < 2 * M_PI; phi += 0.05f) {
+            // Formula toroidale 2D
+            x = (R2 + R1 * cos(phi)) * cos(theta);
+            y = (R2 + R1 * cos(phi)) * sin(theta);
 
-    for (j = 0; j < 6.28; j += 0.07) {
-        for (i = 0; i < 6.28; i += 0.02) {
-            float x3d = j * i + cos(i);
-            float y3d = i * sin(i);
-
-            // Trasforma coordinate "matematiche" in pixel
-            int x_screen = (int)(WIDTH / 2 + x3d * 30);
-            int y_screen = (int)(HEIGHT / 2 - y3d * 30); // asse y invertito
-
-            // Disegna punto
-            if (x_screen >= 0 && x_screen < WIDTH && y_screen >= 0 && y_screen < HEIGHT) {
-                XDrawPoint(display, window, gc, x_screen, y_screen);
-            }
+            // Traslazione al centro della finestra
+            SDL_RenderDrawPoint(renderer, centerX + (int)x, centerY + (int)y);
         }
     }
-
-    XFlush(display);
 }
 
 int main(void) {
-    Display *display = XOpenDisplay(NULL);
-    if (display == NULL) {
-        fprintf(stderr, "Impossibile aprire il display\n");
+    float R1, R2;
+
+    // Inizializza SDL
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        printf("Errore inizializzazione SDL: %s\n", SDL_GetError());
         return 1;
     }
 
-    int screen = DefaultScreen(display);
+    printf("Uqanto vuoi il Raggio della ciambella? \n");
+    scanf("%f", &R1);
 
-    Window window = XCreateSimpleWindow(display,
-                                        RootWindow(display, screen),
-                                        10, 10,
-                                        WIDTH, HEIGHT,
-                                        1,
-                                        BlackPixel(display, screen),
-                                        WhitePixel(display, screen));
+    printf("Uqanto vuoi il Raggio dello spessore ciambella? \n");
+    scanf("%f", &R2);
 
-    XSelectInput(display, window, ExposureMask | KeyPressMask);
-    XMapWindow(display, window);
+    SDL_Window* window = SDL_CreateWindow(
+        "Ciambella 2D",
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        WIDTH, HEIGHT,
+        SDL_WINDOW_SHOWN
+    );    
 
-    GC gc = XCreateGC(display, window, 0, NULL);
+    SDL_Renderer* renderer = SDL_CreateRenderer(
+        window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+    );
 
-    XEvent event;
+    // Colore sfondo: bianco
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderClear(renderer);
+
+    // Colore ciambella: nero
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    drawTorus(renderer, R1, R2);
+
+    // Mostra il rendering
+    SDL_RenderPresent(renderer);
+
+    // Aspetta chiusura finestra o tasto
+    SDL_Event e;
     int running = 1;
-
     while (running) {
-        XNextEvent(display, &event);
-        if (event.type == Expose) {
-            drawPoints(display, window, gc);
-        } else if (event.type == KeyPress) {
-            running = 0; // Esce alla pressione di un tasto
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT || e.type == SDL_KEYDOWN) {
+                running = 0;
+            }
         }
+        SDL_Delay(10); // evita ciclo troppo veloce
     }
 
-    XDestroyWindow(display, window);
-    XCloseDisplay(display);
+    // Chiusura programma
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
     return 0;
 }
+
+
