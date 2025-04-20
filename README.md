@@ -1,12 +1,12 @@
 # 🎥 Torus & SDL
 
-Questo progetto è una mia versione del classico esempio del **torus rotante**.  
-Una piccola aggiunta personale: invece di visualizzarlo nel terminale, utilizzo la libreria **SDL** per mostrarlo a schermo.  
-Mostrare la figura su terminale risultava troppo complesso (e onestamente meno soddisfacente 😅), quindi ho optato per una finestra grafica.
+This project is my take on the classic **rotating torus** example.  
+As a personal twist, instead of rendering it in the terminal, I used the **SDL** library to display it on screen.  
+Rendering it in the terminal was getting too complex (and honestly, less satisfying 😅), so I went with a graphical window.
 
-## 🛠️ Dipendenze
+## 🛠️ Dependencies
 
-Per compilare ed eseguire il progetto, assicurati di avere installato:
+To compile and run this project, make sure you have the following installed:
 
 - `SDL2` (`<SDL2/SDL.h>`)
 - `stdio.h`
