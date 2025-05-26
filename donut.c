@@ -2,8 +2,8 @@
 #include <math.h>
 #include <stdio.h>
 
-#define WIDTH  1050
-#define HEIGHT 1050
+#define WIDTH  600
+#define HEIGHT 600
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -42,7 +42,7 @@ void drawTorus(SDL_Renderer* renderer, float R1, float R2, float K1, float K2) {
     }
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Errore inizializzazione SDL: %s\n", SDL_GetError());
         return 1;

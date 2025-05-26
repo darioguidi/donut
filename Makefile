@@ -1,10 +1,9 @@
-# Compilatore
 CC = gcc
 
 CFLAGS = -Wall -std=c99
 
-# Librerie
-LIBS = -lSDL2 -lm
+# Librerie (aggiunto -lmingw32 e -lSDL2main)
+LIBS = -lmingw32 -lSDL2main -lSDL2 -lm
 
 TARGET = donut
 SRC = donut.c
@@ -17,3 +16,4 @@ clean:
 
 run: $(TARGET)
 	./$(TARGET)
+
